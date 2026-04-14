@@ -1,0 +1,1113 @@
+/* ============================================================
+   QUANT AI TRADING DASHBOARD — Premium Institutional Dark Theme
+   Bloomberg Terminal / Hedge Fund Aesthetic
+   Font: IBM Plex Mono (data/numbers) + DM Sans (UI text)
+   Palette: Void #070A10 | Panel #0E1420 | Surface #141B27
+            Blue #00AAFF | Green #00E59B | Red #FF4560 | Amber #F5A623
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ─── CSS VARIABLES ──────────────────────────────────────── */
+:root {
+    --bg-void:       #04060D;
+    --bg-panel:      #0A1020;
+    --bg-surface:    #111827;
+    --bg-elevated:   #172035;
+    --bg-hover:      #1C2740;
+
+    --border-subtle: #1A2B42;
+    --border-base:   #1F3550;
+    --border-glow:   #00AAFF40;
+
+    --accent-blue:   #00AAFF;
+    --accent-green:  #00E59B;
+    --accent-red:    #FF4560;
+    --accent-amber:  #F5A623;
+    --accent-purple: #A78BFA;
+    --accent-cyan:   #06B6D4;
+
+    --text-primary:  #EDF2FA;
+    --text-secondary:#8A9DB8;
+    --text-muted:    #3E5470;
+    --text-label:    #5E7898;
+
+    /* Refined multi-layer glows */
+    --glow-blue:   0 0 0 1px rgba(0,170,255,0.12), 0 0 30px rgba(0,170,255,0.18), 0 0 60px rgba(0,170,255,0.06);
+    --glow-green:  0 0 0 1px rgba(0,229,155,0.12), 0 0 30px rgba(0,229,155,0.18), 0 0 60px rgba(0,229,155,0.06);
+    --glow-red:    0 0 0 1px rgba(255,69,96,0.12),  0 0 30px rgba(255,69,96,0.18),  0 0 60px rgba(255,69,96,0.06);
+    --glow-amber:  0 0 0 1px rgba(245,166,35,0.12), 0 0 30px rgba(245,166,35,0.18), 0 0 60px rgba(245,166,35,0.06);
+
+    /* Glassmorphism tokens */
+    --glass-bg:      rgba(14, 22, 40, 0.65);
+    --glass-border:  rgba(255, 255, 255, 0.06);
+    --glass-blur:    saturate(160%) blur(20px);
+
+    --radius-sm:   6px;
+    --radius-md:   10px;
+    --radius-lg:   14px;
+    --radius-xl:   20px;
+    --radius-2xl:  28px;
+
+    --transition:       0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow:  0.4s  cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring:0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes signal-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.72; }
+}
+
+@keyframes live-dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,229,155,0.7), 0 0 6px rgba(0,229,155,0.4); }
+    60%       { box-shadow: 0 0 0 7px rgba(0,229,155,0),  0 0 6px rgba(0,229,155,0.4); }
+}
+
+@keyframes scan-line {
+    0%   { left: -60%; }
+    100% { left: 140%; }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position:  600px 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-5px); }
+}
+
+@keyframes gradient-shift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes border-pulse {
+    0%, 100% { border-color: rgba(0,170,255,0.25); }
+    50%       { border-color: rgba(0,170,255,0.6); }
+}
+
+@keyframes number-flash {
+    0%   { color: var(--accent-green); }
+    100% { color: var(--text-primary); }
+}
+
+/* ─── GLOBAL BASE ────────────────────────────────────────── */
+html, body, .stApp {
+    background-color: var(--bg-void) !important;
+    font-family: 'DM Sans', -apple-system, sans-serif !important;
+    color: var(--text-primary) !important;
+}
+
+/* Deep ambient radial glow — adds dimensional depth */
+.stApp::after {
+    content: '';
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+        radial-gradient(ellipse 80% 40% at 20% 0%,   rgba(0,170,255,0.055) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 30% at 80% 100%,  rgba(0,229,155,0.04)  0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 50% 50%,   rgba(167,139,250,0.02) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+}
+
+/* Grain texture — elevated opacity for richer film feel */
+.stApp::before {
+    content: '';
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.55;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--border-base);
+    border-radius: 10px;
+    transition: background var(--transition);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+/* ─── SIDEBAR ────────────────────────────────────────────── */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg,
+        #0A1422 0%,
+        #080F1C 60%,
+        var(--bg-void) 100%) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+    padding-top: 1.5rem;
+    /* Subtle inner-right glow to separate from main content */
+    box-shadow: inset -1px 0 0 rgba(0,170,255,0.06), 4px 0 24px rgba(0,0,0,0.4) !important;
+}
+
+/* Sidebar top accent bar */
+section[data-testid="stSidebar"]::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green), var(--accent-purple));
+    background-size: 200% 100%;
+    animation: gradient-shift 6s ease infinite;
+    z-index: 10;
+}
+
+section[data-testid="stSidebar"] .stMarkdown h1,
+section[data-testid="stSidebar"] .stMarkdown h2,
+section[data-testid="stSidebar"] .stMarkdown h3 {
+    color: var(--text-muted) !important;
+    font-size: 0.68rem !important; font-weight: 700 !important;
+    letter-spacing: 0.14em !important; text-transform: uppercase !important;
+    margin-bottom: 0.5rem !important; padding-bottom: 0.4rem !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+section[data-testid="stSidebar"] label {
+    color: var(--text-label) !important;
+    font-size: 0.8rem !important; font-weight: 500 !important;
+}
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] select,
+section[data-testid="stSidebar"] .stSelectbox > div > div {
+    background-color: rgba(255,255,255,0.04) !important;
+    border: 1px solid var(--border-base) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important;
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.84rem !important;
+    transition: border-color var(--transition), box-shadow var(--transition) !important;
+}
+section[data-testid="stSidebar"] input:focus,
+section[data-testid="stSidebar"] select:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 0 2px rgba(0,170,255,0.12) !important;
+}
+
+/* ─── SIDEBAR HELPERS (used via st.markdown) ─────────────── */
+.sidebar-section-title {
+    font-size: 0.67rem !important; font-weight: 700 !important;
+    letter-spacing: 0.14em !important; text-transform: uppercase !important;
+    color: var(--text-muted) !important;
+    margin: 0 0 0.6rem !important;
+}
+.sidebar-divider {
+    border: none !important;
+    border-top: 1px solid var(--border-subtle) !important;
+    margin: 1rem 0 0.85rem !important;
+    opacity: 0.6;
+}
+.sidebar-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem; padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm); margin-top: 0.4rem;
+    backdrop-filter: blur(8px);
+}
+.sidebar-status--green {
+    color: var(--accent-green);
+    background: rgba(0,229,155,0.08);
+    border: 1px solid rgba(0,229,155,0.22);
+    box-shadow: 0 0 12px rgba(0,229,155,0.06);
+}
+.sidebar-status--amber {
+    color: var(--accent-amber);
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.22);
+    box-shadow: 0 0 12px rgba(245,166,35,0.06);
+}
+.sidebar-status--muted {
+    color: var(--text-muted);
+    background: rgba(74,94,122,0.1);
+    border: 1px solid rgba(74,94,122,0.18);
+}
+
+/* ─── MAIN CONTENT AREA ──────────────────────────────────── */
+.main .block-container {
+    padding: 2rem 2.5rem 3rem !important;
+    max-width: 1440px;
+    animation: fade-in 0.3s ease both;
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+h1 {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.8rem !important; font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 0.25rem !important;
+    /* Subtle text shadow for luminance */
+    text-shadow: 0 0 40px rgba(237,242,250,0.12) !important;
+}
+h2 {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 1.3rem !important; font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.015em !important;
+}
+h3 {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.78rem !important; font-weight: 700 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.13em !important;
+    margin-top: 1.8rem !important; margin-bottom: 0.75rem !important;
+}
+
+/* ─── DIVIDERS ───────────────────────────────────────────── */
+hr {
+    border: none !important; height: 1px !important;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--border-subtle) 20%,
+        var(--border-base) 50%,
+        var(--border-subtle) 80%,
+        transparent) !important;
+    margin: 2.25rem 0 !important;
+    opacity: 0.8;
+}
+
+/* ─── METRIC CARDS ───────────────────────────────────────── */
+div[data-testid="stMetric"] {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-xl) !important;
+    padding: 1.35rem 1.6rem !important;
+    position: relative; overflow: hidden;
+    transition: transform var(--transition-spring), border-color var(--transition), box-shadow var(--transition-slow);
+    animation: fade-in-up 0.4s ease both;
+    /* Subtle inner glow on all cards */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.35) !important;
+}
+
+/* Top accent line — animated gradient */
+div[data-testid="stMetric"]::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--accent-green));
+    background-size: 200% 100%;
+    animation: gradient-shift 5s ease infinite;
+    opacity: 0.7;
+}
+
+/* Inner corner glow for depth */
+div[data-testid="stMetric"]::after {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at top right, rgba(0,170,255,0.07), transparent 70%);
+    pointer-events: none;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-5px) scale(1.005);
+    border-color: rgba(0,170,255,0.3) !important;
+    box-shadow:
+        var(--glow-blue),
+        0 16px 48px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+div[data-testid="stMetricLabel"] > div {
+    color: var(--text-label) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.7rem !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.12em !important;
+}
+div[data-testid="stMetricValue"] > div {
+    color: var(--text-primary) !important;
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 2rem !important; font-weight: 700 !important;
+    letter-spacing: -0.025em !important; line-height: 1.15 !important;
+    /* Number luminance */
+    text-shadow: 0 0 20px rgba(237,242,250,0.15) !important;
+}
+div[data-testid="stMetricDelta"] > div {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.8rem !important; font-weight: 600 !important;
+}
+
+/* ─── EXPANDERS ──────────────────────────────────────────── */
+div[data-testid="stExpander"] {
+    background: var(--bg-panel) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-lg) !important;
+    margin-top: 0.75rem !important; margin-bottom: 1.5rem !important;
+    overflow: hidden !important;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+    transition: border-color var(--transition), box-shadow var(--transition) !important;
+}
+div[data-testid="stExpander"]:hover {
+    border-color: rgba(0,170,255,0.28) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,170,255,0.08) !important;
+}
+div[data-testid="stExpander"] details summary {
+    padding: 0.95rem 1.3rem !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.82rem !important; font-weight: 600 !important;
+    color: var(--text-secondary) !important; letter-spacing: 0.04em !important;
+    background: var(--bg-elevated) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition) !important;
+    list-style: none !important;
+}
+div[data-testid="stExpander"] details summary::-webkit-details-marker { display: none; }
+div[data-testid="stExpander"] details summary:hover {
+    color: var(--accent-blue) !important;
+    background: var(--bg-hover) !important;
+}
+div[data-testid="stExpander"] details[open] summary { color: var(--accent-blue) !important; }
+div[data-testid="stExpander"] details > div { padding: 1.3rem !important; }
+div[data-testid="stExpander"] .stMarkdown {
+    color: var(--text-secondary) !important;
+    font-size: 0.9rem !important; line-height: 1.72 !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul {
+    list-style: none !important; padding: 0 !important; margin: 0 !important;
+    display: flex !important; flex-direction: column !important;
+    gap: 0.55rem !important; width: 100% !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li {
+    padding: 0.9rem 1rem 0.9rem 1.15rem !important;
+    border-radius: var(--radius-sm) !important;
+    font-size: 0.87rem !important; line-height: 1.65 !important;
+    margin: 0 !important; width: 100% !important;
+    box-sizing: border-box !important; position: relative;
+    transition: transform var(--transition) !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li:hover {
+    transform: translateX(3px) !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li:nth-child(1) {
+    background: rgba(139,155,181,0.06) !important;
+    border: 1px solid rgba(139,155,181,0.14) !important;
+    border-left: 3px solid var(--text-muted) !important;
+    color: var(--text-secondary) !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li:nth-child(2) {
+    background: rgba(0,170,255,0.05) !important;
+    border: 1px solid rgba(0,170,255,0.14) !important;
+    border-left: 3px solid var(--accent-blue) !important;
+    color: #93C5E8 !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li:nth-child(3) {
+    background: rgba(0,229,155,0.05) !important;
+    border: 1px solid rgba(0,229,155,0.14) !important;
+    border-left: 3px solid var(--accent-green) !important;
+    color: #7EE8C2 !important;
+}
+div[data-testid="stExpander"] .stMarkdown ul li strong {
+    color: #FFFFFF !important; font-weight: 700 !important; font-size: 0.88rem !important;
+}
+
+/* ─── BUTTONS ────────────────────────────────────────────── */
+div.stButton > button,
+div.stDownloadButton > button,
+div[data-testid="stButton"] > button,
+div[data-testid="stDownloadButton"] > button,
+button[data-testid="baseButton-primary"],
+button[data-testid="baseButton-secondary"] {
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important; font-size: 0.8rem !important;
+    letter-spacing: 0.1em !important; text-transform: uppercase !important;
+    border-radius: var(--radius-md) !important;
+    padding: 0.7rem 1.5rem !important;
+    transition: all var(--transition-spring) !important;
+    background: rgba(0,229,155,0.07) !important;
+    background-image: none !important;
+    color: var(--accent-green) !important;
+    border: 1px solid rgba(0,229,155,0.35) !important;
+    box-shadow: 0 0 16px rgba(0,229,155,0.08), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+    position: relative; overflow: hidden;
+}
+/* Button shimmer on hover */
+div.stButton > button::after,
+div[data-testid="stButton"] > button::after {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    transition: left 0.5s ease;
+}
+div.stButton > button:hover::after,
+div[data-testid="stButton"] > button:hover::after {
+    left: 100%;
+}
+div.stButton > button:hover,
+div.stDownloadButton > button:hover,
+div[data-testid="stButton"] > button:hover,
+div[data-testid="stDownloadButton"] > button:hover {
+    background: rgba(0,229,155,0.14) !important;
+    background-image: none !important;
+    color: #00FFBA !important;
+    border-color: var(--accent-green) !important;
+    box-shadow: var(--glow-green), 0 4px 20px rgba(0,0,0,0.4) !important;
+    transform: translateY(-2px) !important;
+}
+div.stButton > button:active,
+div[data-testid="stButton"] > button:active {
+    transform: translateY(0px) !important;
+    box-shadow: 0 0 12px rgba(0,229,155,0.15) !important;
+}
+button[kind="primary"],
+button[data-testid="baseButton-primary"] {
+    background: rgba(0,229,155,0.07) !important;
+    background-color: rgba(0,229,155,0.07) !important;
+    background-image: none !important;
+    color: var(--accent-green) !important;
+    border: 1px solid rgba(0,229,155,0.35) !important;
+    box-shadow: 0 0 16px rgba(0,229,155,0.08) !important;
+}
+button[kind="primary"]:hover,
+button[data-testid="baseButton-primary"]:hover {
+    background: rgba(0,229,155,0.14) !important;
+    background-color: rgba(0,229,155,0.14) !important;
+    background-image: none !important;
+    color: #00FFBA !important;
+    border-color: var(--accent-green) !important;
+    box-shadow: var(--glow-green) !important;
+}
+
+/* ─── PROGRESS BAR ───────────────────────────────────────── */
+div[data-testid="stProgress"] > div > div > div {
+    background: linear-gradient(90deg,
+        var(--accent-blue),
+        var(--accent-cyan),
+        var(--accent-green)) !important;
+    background-size: 200% 100% !important;
+    animation: gradient-shift 3s ease infinite !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 10px rgba(0,229,155,0.3) !important;
+}
+div[data-testid="stProgress"] > div > div {
+    background: var(--bg-elevated) !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+}
+
+/* ─── DATA TABLES ────────────────────────────────────────── */
+div[data-testid="stDataFrame"], div[data-testid="stTable"] {
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
+}
+div[data-testid="stDataFrame"] th, div[data-testid="stTable"] th {
+    background: var(--bg-elevated) !important;
+    color: var(--text-muted) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.68rem !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.1em !important;
+    border-bottom: 1px solid var(--border-base) !important;
+    padding: 0.7rem 1rem !important;
+}
+div[data-testid="stDataFrame"] td, div[data-testid="stTable"] td {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.82rem !important; color: var(--text-secondary) !important;
+    border-bottom: 1px solid rgba(26,43,66,0.6) !important;
+    padding: 0.6rem 1rem !important;
+    transition: background var(--transition), color var(--transition) !important;
+}
+div[data-testid="stDataFrame"] tr:hover td {
+    background: var(--bg-hover) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ─── CHARTS ─────────────────────────────────────────────── */
+div[data-testid="stPyplotRootElement"] {
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-xl) !important;
+    overflow: hidden !important;
+    background: var(--bg-panel) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+    transition: box-shadow var(--transition-slow) !important;
+}
+div[data-testid="stPyplotRootElement"]:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), var(--glow-blue) !important;
+}
+div[data-testid="stArrowVegaLiteChart"] {
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-xl) !important;
+    overflow: hidden !important; padding: 0.75rem !important;
+    background: var(--bg-panel) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+}
+
+/* ─── ALERTS ─────────────────────────────────────────────── */
+div[data-testid="stAlert"] {
+    border-radius: var(--radius-md) !important;
+    border-width: 1px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.88rem !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+/* ─── SLIDERS & CHECKBOXES ───────────────────────────────── */
+div[data-testid="stSlider"] > div > div > div > div {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)) !important;
+}
+div[data-testid="stSlider"] div[data-testid="stMarkdownContainer"],
+div[data-testid="stSlider"] div[data-testid="stMarkdownContainer"] * {
+    color: #FFFFFF !important;
+}
+div[data-testid="stSlider"] [role="slider"] {
+    background: var(--accent-blue) !important;
+    border: 2px solid rgba(255,255,255,0.9) !important;
+    box-shadow: 0 0 0 3px rgba(0,170,255,0.25), 0 0 16px rgba(0,170,255,0.5) !important;
+    transition: box-shadow var(--transition) !important;
+}
+div[data-testid="stSlider"] [role="slider"]:hover {
+    box-shadow: 0 0 0 4px rgba(0,170,255,0.35), 0 0 24px rgba(0,170,255,0.6) !important;
+}
+div[data-testid="stSlider"] p, div[data-testid="stSlider"] span,
+div[data-testid="stSlider"] div { color: #FFFFFF !important; }
+
+/* ─── SELECT / NUMBER / TEXT INPUTS ─────────────────────── */
+div[data-testid="stSelectbox"] > div > div,
+div[data-testid="stNumberInput"] input,
+div[data-testid="stTextInput"] input {
+    background-color: rgba(255,255,255,0.04) !important;
+    border: 1px solid var(--border-base) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important;
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 0.84rem !important;
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition) !important;
+}
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus {
+    border-color: var(--accent-blue) !important;
+    background-color: rgba(0,170,255,0.04) !important;
+    box-shadow: 0 0 0 3px rgba(0,170,255,0.12), 0 0 12px rgba(0,170,255,0.08) !important;
+    outline: none !important;
+}
+
+/* ─── DOWNLOAD BUTTON ────────────────────────────────────── */
+div[data-testid="stDownloadButton"] button {
+    background: transparent !important;
+    border: 1px solid var(--border-base) !important;
+    color: var(--text-secondary) !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.8rem !important; font-weight: 600 !important;
+    border-radius: var(--radius-md) !important;
+    transition: all var(--transition) !important;
+}
+div[data-testid="stDownloadButton"] button:hover {
+    border-color: var(--accent-green) !important;
+    color: var(--accent-green) !important;
+    background: rgba(0,229,155,0.06) !important;
+    box-shadow: var(--glow-green) !important;
+}
+
+/* ─── MARKDOWN ───────────────────────────────────────────── */
+.stMarkdown strong { color: var(--text-primary); }
+.stMarkdown p strong { font-family: 'IBM Plex Mono', monospace; font-size: 0.93rem; }
+.stMarkdown p:has(strong) {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-base);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1rem;
+    display: inline-block; font-size: 0.87rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ─── SECTION ACCENT BAR ─────────────────────────────────── */
+.main h2::before {
+    content: ''; display: inline-block;
+    width: 3px; height: 1em;
+    background: linear-gradient(180deg, var(--accent-blue), var(--accent-cyan));
+    border-radius: 2px;
+    margin-right: 0.65rem; vertical-align: middle;
+    position: relative; top: -1px;
+    box-shadow: 0 0 8px rgba(0,170,255,0.5);
+}
+
+/* ─── LOADING ────────────────────────────────────────────── */
+div[data-testid="stSpinner"] { color: var(--accent-blue) !important; }
+div[data-testid="stStatusWidget"] {
+    color: var(--text-muted) !important; font-size: 0.78rem !important;
+    font-family: 'IBM Plex Mono', monospace !important;
+}
+
+/* ================================================================
+   HOME PAGE STYLES
+   ================================================================ */
+
+.home-hero {
+    text-align: center;
+    padding: 4rem 2rem 2.75rem;
+    animation: fade-in-up 0.5s ease both;
+    position: relative;
+}
+/* Hero ambient glow */
+.home-hero::before {
+    content: '';
+    position: absolute; top: 20%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(0,170,255,0.07) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+}
+.home-hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.67rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-blue);
+    border: 1px solid rgba(0,170,255,0.28);
+    background: rgba(0,170,255,0.07);
+    padding: 0.35rem 1.1rem; border-radius: 20px;
+    margin-bottom: 1.4rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 16px rgba(0,170,255,0.08);
+    position: relative; z-index: 1;
+}
+.home-hero-badge::before {
+    content: '';
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent-blue);
+    animation: live-dot-pulse 2s ease-in-out infinite;
+}
+.home-hero-title {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 3.4rem !important; font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.035em !important;
+    line-height: 1.12 !important; margin: 0.5rem 0 1rem !important;
+    position: relative; z-index: 1;
+}
+.home-hero-accent {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 40%, var(--accent-green) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease infinite;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.home-hero-subtitle {
+    color: var(--text-secondary) !important;
+    font-size: 1.05rem !important;
+    font-weight: 400 !important; letter-spacing: 0.02em !important;
+    position: relative; z-index: 1;
+}
+
+/* Nav cards */
+.nav-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    padding: 2.25rem 2rem;
+    height: 100%;
+    transition: transform var(--transition-spring), border-color var(--transition), box-shadow var(--transition-slow);
+    animation: fade-in-up 0.5s ease both;
+    position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.nav-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background-size: 200% 100%;
+    animation: gradient-shift 5s ease infinite;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+.nav-card:hover::before { opacity: 1; }
+.nav-card--train::before {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-blue));
+}
+.nav-card--live::before {
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), var(--accent-green));
+}
+/* Corner glow per card type */
+.nav-card--train::after {
+    content: ''; position: absolute; bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,170,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+.nav-card--live::after {
+    content: ''; position: absolute; bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,229,155,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+.nav-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(0,170,255,0.3) !important;
+    box-shadow:
+        0 28px 64px rgba(0,0,0,0.55),
+        var(--glow-blue),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.nav-card--live:hover {
+    border-color: rgba(0,229,155,0.3) !important;
+    box-shadow:
+        0 28px 64px rgba(0,0,0,0.55),
+        var(--glow-green),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.nav-card__icon {
+    font-size: 2.2rem; margin-bottom: 0.6rem;
+    display: inline-block;
+    animation: float 4s ease-in-out infinite;
+}
+.nav-card__label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+    color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.45rem;
+}
+.nav-card__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.55rem; font-weight: 700;
+    color: var(--text-primary); margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+.nav-card__desc {
+    color: var(--text-secondary); font-size: 0.9rem;
+    line-height: 1.68; margin-bottom: 1.35rem;
+}
+.nav-card__features {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.4rem;
+}
+.nav-card__features li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem; color: var(--text-secondary);
+    padding: 0.35rem 0.7rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-sm);
+    border-left: 2px solid var(--border-base);
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+}
+.nav-card__features li:hover {
+    background: rgba(0,170,255,0.05);
+    border-left-color: var(--accent-blue);
+    color: var(--text-primary);
+    transform: translateX(4px);
+}
+
+/* Status chips */
+.status-chip {
+    display: inline-flex; align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.73rem; padding: 0.38rem 0.9rem;
+    border-radius: 20px; font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: box-shadow var(--transition);
+}
+.status-chip--green {
+    color: var(--accent-green);
+    background: rgba(0,229,155,0.08);
+    border: 1px solid rgba(0,229,155,0.25);
+    box-shadow: 0 0 10px rgba(0,229,155,0.06);
+}
+.status-chip--green:hover { box-shadow: 0 0 16px rgba(0,229,155,0.18); }
+.status-chip--blue {
+    color: var(--accent-blue);
+    background: rgba(0,170,255,0.08);
+    border: 1px solid rgba(0,170,255,0.25);
+    box-shadow: 0 0 10px rgba(0,170,255,0.06);
+}
+.status-chip--blue:hover { box-shadow: 0 0 16px rgba(0,170,255,0.18); }
+.status-chip--amber {
+    color: var(--accent-amber);
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.25);
+    box-shadow: 0 0 10px rgba(245,166,35,0.06);
+}
+.status-chip--muted {
+    color: var(--text-muted);
+    background: rgba(74,94,122,0.1);
+    border: 1px solid rgba(74,94,122,0.2);
+}
+
+
+/* ================================================================
+   LIVE TRADING PAGE STYLES
+   ================================================================ */
+
+/* Header bar */
+.live-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.65rem 1.35rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.35rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.77rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.live-header__left { display: flex; align-items: center; gap: 0.7rem; }
+.live-header__right { color: var(--text-muted); font-size: 0.72rem; }
+.live-label {
+    color: var(--accent-green); font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; font-size: 0.7rem;
+    text-shadow: 0 0 12px rgba(0,229,155,0.4);
+}
+.live-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-green);
+    box-shadow: 0 0 6px rgba(0,229,155,0.6);
+    animation: live-dot-pulse 1.8s ease-in-out infinite;
+}
+
+/* ── AI SIGNAL BANNER ── */
+.signal-banner {
+    display: flex; justify-content: space-between; align-items: center;
+    border-radius: var(--radius-xl);
+    padding: 2rem 2.25rem;
+    margin: 1.35rem 0 0;
+    animation: fade-in-up 0.4s ease both;
+    position: relative; overflow: hidden;
+    /* Glass base — color applied inline via python */
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 40px rgba(0,0,0,0.4);
+}
+/* Shimmer sweep */
+.signal-banner::after {
+    content: '';
+    position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+    animation: scan-line 5s linear infinite;
+    transform: skewX(-20deg);
+}
+/* Corner radial light */
+.signal-banner::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+.signal-banner__left { display: flex; align-items: center; gap: 1.4rem; position: relative; z-index: 1; }
+.signal-banner__right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.45rem; position: relative; z-index: 1; }
+.signal-icon {
+    font-size: 3.75rem; line-height: 1;
+    transition: transform var(--transition-spring), filter 0.3s ease;
+    filter: drop-shadow(0 0 16px currentColor);
+}
+.signal-icon:hover { transform: scale(1.1); }
+.signal-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 2.1rem; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    text-shadow: 0 0 30px currentColor;
+}
+.signal-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.73rem; color: var(--text-muted);
+    letter-spacing: 0.09em; margin-top: 0.2rem;
+}
+.signal-vix-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem; font-weight: 600;
+    padding: 0.35rem 0.95rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+    backdrop-filter: blur(8px);
+}
+.signal-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; color: var(--text-muted);
+}
+
+/* ── Pre-flight banners ── */
+.preflight-banner {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.1rem 1.35rem;
+    background: rgba(245,166,35,0.05);
+    border: 1px solid rgba(245,166,35,0.18);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; color: var(--text-secondary);
+    backdrop-filter: blur(12px);
+    transition: border-color var(--transition);
+}
+.preflight-banner:hover { border-color: rgba(245,166,35,0.35); }
+.preflight-banner--blue {
+    background: rgba(0,170,255,0.05);
+    border-color: rgba(0,170,255,0.18);
+}
+.preflight-banner--blue:hover { border-color: rgba(0,170,255,0.35); }
+.preflight-icon { font-size: 1.35rem; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Account / Position cards ── */
+.no-api-card, .position-empty {
+    display: flex; align-items: center; gap: 1.1rem;
+    padding: 1.1rem 1.5rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; color: var(--text-secondary);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* ── Trade confirmation box ── */
+.trade-confirm-box {
+    border-radius: var(--radius-xl);
+    padding: 1.75rem 2rem;
+    margin-top: 1.35rem;
+    animation: fade-in-up 0.35s ease both;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 8px 32px rgba(0,0,0,0.4);
+}
+.trade-confirm-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.2rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 0.7rem;
+}
+.trade-confirm-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem; color: var(--text-secondary);
+    line-height: 1.7; margin-bottom: 0.8rem;
+}
+.trade-confirm-disclaimer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.73rem; color: var(--text-muted);
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Order result ── */
+.order-result {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.87rem; padding: 0.9rem 1.3rem;
+    border-radius: var(--radius-md);
+    background: rgba(0,229,155,0.07);
+    border: 1px solid rgba(0,229,155,0.28);
+    color: var(--accent-green); margin: 1rem 0;
+    animation: fade-in-up 0.3s ease both;
+    box-shadow: 0 0 20px rgba(0,229,155,0.08);
+}
+
+/* ── Empty state ── */
+.empty-state {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center;
+    padding: 5.5rem 2rem;
+    border: 1px dashed var(--border-subtle);
+    border-radius: var(--radius-2xl);
+    background: rgba(255,255,255,0.01);
+    margin: 2rem 0;
+    animation: fade-in-up 0.45s ease both;
+    position: relative; overflow: hidden;
+}
+.empty-state::before {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(0,170,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+.empty-state__icon {
+    font-size: 3.75rem; margin-bottom: 1.1rem;
+    opacity: 0.45;
+    animation: float 4s ease-in-out infinite;
+}
+.empty-state__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--text-secondary);
+    margin-bottom: 0.65rem;
+}
+.empty-state__sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; color: var(--text-muted);
+    max-width: 460px; line-height: 1.7;
+}
+
+/* ── Tabs ── */
+div[data-testid="stTabs"] button[role="tab"] {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.81rem !important; font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important;
+    transition: color var(--transition), background var(--transition) !important;
+    padding: 0.6rem 1rem !important;
+}
+div[data-testid="stTabs"] button[role="tab"]:hover {
+    color: var(--text-secondary) !important;
+    background: rgba(255,255,255,0.03) !important;
+}
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+    color: var(--accent-blue) !important;
+    border-bottom-color: var(--accent-blue) !important;
+    text-shadow: 0 0 16px rgba(0,170,255,0.4) !important;
+}
+
+/* ── File uploader ── */
+div[data-testid="stFileUploader"] {
+    background: rgba(255,255,255,0.02) !important;
+    border: 1px dashed var(--border-base) !important;
+    border-radius: var(--radius-lg) !important;
+    transition: border-color var(--transition), background var(--transition), box-shadow var(--transition) !important;
+}
+div[data-testid="stFileUploader"]:hover {
+    border-color: var(--accent-blue) !important;
+    background: rgba(0,170,255,0.03) !important;
+    box-shadow: 0 0 24px rgba(0,170,255,0.06) !important;
+}
+div[data-testid="stFileUploader"] label {
+    color: var(--text-label) !important;
+    font-size: 0.81rem !important; font-weight: 600 !important;
+}
+
+/* ── Password input ── */
+div[data-testid="stTextInput"] input[type="password"] {
+    letter-spacing: 0.18em !important;
+}
+
+/* ─── TOOLTIP ENHANCEMENT ────────────────────────────────── */
+div[data-testid="stTooltipIcon"] {
+    color: var(--text-muted) !important;
+    transition: color var(--transition) !important;
+}
+div[data-testid="stTooltipIcon"]:hover { color: var(--accent-blue) !important; }
+
+/* ─── RADIO BUTTONS ──────────────────────────────────────── */
+div[data-testid="stRadio"] label {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.86rem !important;
+    color: var(--text-secondary) !important;
+    transition: color var(--transition) !important;
+}
+div[data-testid="stRadio"] label:hover { color: var(--text-primary) !important; }
+
+/* ─── CHECKBOX ───────────────────────────────────────────── */
+div[data-testid="stCheckbox"] label {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.86rem !important;
+    color: var(--text-secondary) !important;
+    transition: color var(--transition) !important;
+}
+div[data-testid="stCheckbox"] label:hover { color: var(--text-primary) !important; }
+
+/* ─── COLUMN GAPS ────────────────────────────────────────── */
+div[data-testid="column"] { transition: opacity var(--transition); }
+
+/* ─── INFO / SUCCESS / WARNING / ERROR CALLOUTS ──────────── */
+div[data-testid="stAlert"][data-baseweb="notification"] {
+    backdrop-filter: blur(16px) !important;
+    border-radius: var(--radius-md) !important;
+}

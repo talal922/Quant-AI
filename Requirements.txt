@@ -1,0 +1,11 @@
+numpy
+pandas
+yfinance
+pandas_ta
+scikit-learn
+matplotlib
+gymnasium
+stable-baselines3
+torch
+joblib
+streamlit

@@ -1,0 +1,2 @@
+cd "C:\Users\talal\OneDrive\سطح المكتب\AI AGENT"
+streamlit run app.py
